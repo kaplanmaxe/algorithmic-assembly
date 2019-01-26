@@ -12,8 +12,7 @@
 		add $a1, $s1, $0 # put value of N in param2
 		jal bubbleSort # sort arr
 		jal printValues # print the values
-		li $v0, 10 # exit
-		syscall
+		j exit # exit
 	bubbleSort:
 		add $sp, $sp, -8 # make room for 3 ints on stack (i, j, tmp)
 		sw $s0, 0($sp) # i
@@ -34,9 +33,9 @@
 		addi $t1, $t0, 4 # get ready to do arr[j + 1]. Shift 4 bits cause we have ints
 		add $t0, $t0, $a0 # add address of j and arr
 		add $t1, $t1, $a0 # add address of j + 1 and arr
-		lw $t2, 0($t0) # arr[j]
-		lw $t3, 0($t1) # arr[j + 1]
-		slt $t4, $t3, $t2 # arr[j + 1] < arr[j]
+		lw $t2, 0($t0) # *arr[j]
+		lw $t3, 0($t1) # *arr[j + 1]
+		slt $t4, $t3, $t2 # *arr[j + 1] < *arr[j]
 		bne $t4, $0, swap
 		addi $s1, $s1, 1 # j++
 		j innerLoop
@@ -75,5 +74,8 @@
 	returnPrintValues:
 		lw $s0, 0($sp)
 		lw $a0, 4($sp)
-		addi $sp, $sp, 8 # restore stack pointer
+		addi $sp, $sp, -8 # restore stack pointer
 		jr $ra
+	exit:
+		li $v0, 10 # exit
+		syscall
