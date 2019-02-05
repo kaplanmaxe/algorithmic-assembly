@@ -7,6 +7,7 @@
 	la $s0, arr # get address of array
 	la $s1, N # get address of N
 	lw $s1, 0($s1) # get value of N
+	.globl main
 	main:
 		add $a0, $s0, $0 # get address of arr in param1
 		add $a1, $s1, $0 # put value of N in param2
